@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <meta name='theme-color' content='#b5e2c1'>
+  <meta name='description' content='Hiking trails Swiss National Park'>
+  <meta name='author' content='Raluca Nicola, ESRI'>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="./src/img/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./src/img/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./src/img/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./src/img/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./src/img/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./src/img/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./src/img/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./src/img/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./src/img/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="./src/img/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./src/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./src/img/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./src/img/favicon-16x16.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <meta name='apple-mobile-web-app-title' content='Hiking trails'>
+  <meta name='mobile-web-app-capable' content='yes'>
+  <meta name='apple-mobile-web-app-status-bar-style' content='#b5e2c1'>
+
+  <title>Dali Hiking</title>
+
+  <link rel='stylesheet' href='https://js.arcgis.com/4.20/esri/css/main.css'>
+  <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+<% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+<% } %>
+<link rel="stylesheet" href="/src/style/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+</head>
+
+<body>
+  
+  <div id='scenePanel'></div>
+
+  <div class='menuPanel'>
+
+
+    <!-- <div class="popup-screen">
+      <div class="popup-box">
+        <i class="fas fa-times close-btn"></i>
+        <h2>Welcome to the map!</h2>
+        <p>Click on a trail or its name to the <b>left</b>
+          to learn about its details or directly search by name in the left panel. Click on the <b>circular</b> icons on the map to learn more about the unique features of this park.</p>
+      </div>
+    </div> -->
+
+    <!-- <section class="home">
+      <div class="info">
+        <h2>Popup screen with cookies</h2>
+
+      </div>
+    </section> -->
+    <!-- <script type="text/javascript">
+      const popupScreen = document.querySelector(".popup-screen");
+      const popupBox = document.querySelector(".popup-box");
+      const closeBtn = document.querySelector(".close-btn");
+
+      window.addEventListener("load", () =>{
+        setTimeout(() =>{
+          popupScreen.classList.add("active");
+        }, 4000); //2000 means it takes 2 seconds for the popup to occur
+      });
+
+      closeBtn.addEventListener("click",() =>{
+        popupScreen.classList.remove("active"); //this closes the popupscreen when you click the close utton
+      });
+    </script> -->
+    
+    <h1 class='section title'>Hiking trails in <br>
+      Cangshan Geopark</h1>
+
+    <ul class='menuTabs section'>
+      <li class='active' data-tab='selectionPanel'>Hikes</li>
+      <li data-tab='detailPanel'>Details</li>
+      <!-- <li data-tab='basemapPanel'>Basemap</li> -->
+      <li data-tab='geologypanel'>Geology</li>
+    </ul>
+
+    <div id='selectionPanel' class='panel invisible'>
+      <div id='trailsPanel'></div>
+      <button aria-label='Remove trail button' class='removeSelected' disabled>Remove selected trail</button>
+      <div id='filterPanel'></div>
+    </div>
+
+    <div id='detailPanel' class='panel invisible'>
+      <h1 class='center' id='detailTitle'></h1>
+      <div id='detailInfograph'></div>
+      <div id='detailDescription'></div>
+      <div id='detailElevationProfile'></div>
+    </div>
+
+    <div id='basemapPanel' class='panel invisible'>
+      <div class='basemaps'></div>
+      <div class='layers'></div>
+    </div>
+
+    <div id='geologypanel' class='panel invisible'>
+      <div class='geology'><h1>Location</h1></div>
+      <div class='paragraphy1'><h4>The Cang mountain range is located at the southern end of the eastern branch of the Yunling Mountains, for which Yunnan is named. These mountains are part of the greater Hengduan Mountains(横断山脉) which stretch from the Yunnan-Guizhou Plateau to the Tibetan Plateau. Cangshan is approximately 50 km in length, running north-south, and 12 km wide.<img style = max-width:100% src="/src/img/finalchinamap1.png" </h4>
+        </div>
+<br>
+      <div class='paragraphy2'><h4>Cangshan is a fault-block mountain and was formed by the uplifting and sinking of the earth’s plates along this fault line. 
+        It contains more than 10 types of metamorphic rocks such as granulite, migmatite, schist, slate, and marble. 
+        The marble of Cangshan, known as Dali marble (大理石), is widely known for its beautiful patterns which can mirror those of traditional Chinese landscape paintings.</h4>
+      </div>
+      <br>
+      <br>
+      <div class="paragraph3"><h4> Cangshan’s past glaciers are unique as being the southernmost point of paleo-glaciation in China. This glaciation, which took place 57.6 and then 16 
+        thousand years ago, dramatically altered Cangshan’s landscape at an altitude above 3500 meters. Large glacial remnants, such as cirques, horns, arêtes, and glacial lakes can all 
+        be seen as one approaches the mountain’s peaks. Click on the green mountain icons on the map to learn more about some of these features.</h4></div>
+
+
+        <!-- add a div and an id for the img so that you can change the size of it in css -->
+
+      
+      
+      <div class='layers'></div>
+    </div>
+
+  </div>
+
+  <div class='smallMenu'>
+    <button aria-label='Set initial extent' id='home' class='fa fa-home'></button>
+    <button aria-label='Show details' id='details' class='fa fa-binoculars mobileButton'></button>
+    <button aria-label='Show information about this app' id='about' class='fa fa-question'></button>
+  </div>
+
+  <!-- <span class='share'>
+    <a aria-label='Fork me on github' class='fa fa-github-square' href='https://github.com/Esri/hiking-trails-app/' target='_blank'></a>
+    <a aria-label='Tweet about this app' class='twitter-share-button' href='https://twitter.com/intent/tweet'>Tweet</a>
+  </span> -->
+
+  <div id='starterPage' class='starter'>
+    <div class='inner'>
+      <div class='cell'>
+        <h1 class='heading-starter center'>Dali Cangshan UNESCO Geopark</h1>
+        <p class='description lead center'>This app shows Cangshan's primary hiking trails while also highlighting the geological structures of the park. Click on an icon or trail on the map to get started.
+        </p>
+        <p id='startApp' class='lead center'>
+          <button id='showMap'>Explore</button>
+        </p>
+      </div>
+    </div>
+    <div class='foot'>
+      <div class='center'>
+        <!-- <p>
+          <a href='http://developers.arcgis.com/javascript'>
+            <img src='./src/img/esri-10GlobeLogo_1C.png' alt='esri logo'>
+          </a>
+        </p> -->
+      </div>
+    </div>
+  </div>
+ 
+  <div id='credentialsPanel'>
+    <span class="esri-icon-close" id="close"></span>
+    <h1>Disclaimer</h1>
+    <p>This is an application made by Bryce Linden as part of his final Master's practicum at UW-Madison.
+      It is built on top of an existing web application found here: <a href="https://github.com/Esri/hiking-trails-app/" target="_blank">Esri Hiking Map</a>.</p>
+    <h1> Credits </h1>
+      <p>Data for the hiking trails was obtained from Open Street Map <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
+      <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
+      <p><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> was used for the icons.</p>
+    </ul>
+  </div>
+
+  <div id='helpPanel'>
+    <span class="esri-icon-close" id="close"></span>
+    <h1>Disclaimer</h1>
+    <p>This is an application made by Bryce Linden as part of his final Master's practicum at UW-Madison.
+      It is built on top of an existing web application found here: <a href="https://github.com/Esri/hiking-trails-app/" target="_blank">Esri Hiking Map</a>.</p>
+    <h1> Credits </h1>
+      <p>Data for the hiking trails was obtained from Open Street Map <a href="http://www.nationalpark.ch/en/visit/trails-routes" target="_blank">Swiss National Park</a>. </p>
+      <p>Basemaps and satellite image by <a href="https://www.esri.com/" target="_blank">ESRI</a></p>
+      <p><a href="https://fontawesome.com/" target="_blank">Font Awesome</a> was used for the icons.</p>
+    </ul>
+  </div>
+
+
+  <!--load ArcGIS API for JavaScript-->
+  <script>
+    var dojoConfig = {
+      has: {
+        "esri-promise-compatibility": 1
+      },
+      async: true
+    };
+  </script>
+  <script type='text/javascript' rel=preload src='https://js.arcgis.com/4.20/'></script>
+  <!--load app-->
+  <script>
+    require([<% for (var chunk in htmlWebpackPlugin.files.js) { %>
+      '<%= htmlWebpackPlugin.files.js[chunk] %>',
+    <% } %>], function (main) { });
+  </script>
+
+  <!--script for Twitter sharing link-->
+  <!-- <script>
+    window.twttr = (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function (f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, 'script', 'twitter-wjs'));
+  </script> -->
+</body>
+
+</html>
